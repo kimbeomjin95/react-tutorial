@@ -9,11 +9,11 @@ function App() {
 
     // props.children 적용
     <Wrapper>
-      {/* 컴포넌트를 이용하여 특정 값(props)을 전달 */}
-      <Hello name="hansol" color="red" />
+      {/* 조건부 렌더링 - 특정 조건에 따라서 다른 결과를 보여주는 것을 의미함 */}
+      <Hello name="hansol" color="red" isSpecial /> {/* isSpecial - 값을 생략하고 이름만 선언한 경우 true를 의미함 */}
       <Hello color="pink" />
     </Wrapper>
-    
+
   );
 }
 
