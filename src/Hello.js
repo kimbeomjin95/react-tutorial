@@ -1,10 +1,15 @@
-import React from 'react'; // 리액트를 불러와서 사용하겠다는 의미
+import React from 'react'; 
 
-// 컴포넌트를 만드는 방법 2가지(함수, 클래스)
-
-function Hello() { // 컴포넌트명의 대문자로 시작
-    return <div>안녕하세요</div>; // 세미콜론 유무는 선택
+function Hello({ color, name }) { // 비구조화 할당, 구조분해 적용
+    return <div style={{
+        color // color: color와 같은 의미
+    }}>안녕하세요{name}</div>; 
 }
 
-// Hello 컴포넌트를 만들어서 내보내겠다는 의미
+// props를 지정하지 않고 기본값을 사용할 경우
+// 특정값이 없을 때 기본적으로 사용할 값
+Hello.defaultProps = {
+    name: '이름없음'
+};
+
 export default Hello;
