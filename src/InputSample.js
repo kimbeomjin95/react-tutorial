@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react'; // DOM에 직접 접근
 
 function InputSample() {
     // 객체형태 상태관리(UPDATE)
@@ -6,6 +6,9 @@ function InputSample() {
         name: '',
         nickname: ''
     });
+
+    //  객체 생성
+    const nameInput = useRef();
 
     // 추출(비구조화 할당)
     const { name, nickname } = inputs;
@@ -31,6 +34,8 @@ function InputSample() {
             name: '',
             nickname: ''
         });
+        // current는 해당 요소의 DOM을 가르킴
+        nameInput.current.focus();
     };
     return(
         <div>
@@ -39,6 +44,7 @@ function InputSample() {
                 placeholder="이름" 
                 onChange={onChange} 
                 value={name} 
+                ref={nameInput} // 원하는 DOM에 useRef를 설정하여 직접 접근 가능
             />
             <input 
                 name="nickname" 
