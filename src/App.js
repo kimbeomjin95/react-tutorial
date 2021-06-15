@@ -1,10 +1,10 @@
-import InputSample from './InputSample';
+import UserList from './UserList';
 
 function App() {
   const name = 'react';
 
   return (  
-    <InputSample />
+    <UserList />
   );
 }
 
