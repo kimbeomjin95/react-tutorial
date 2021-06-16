@@ -68,7 +68,7 @@ function App() {
       username: '',
       email: ''
     })
-    console.log(nextId.current) // 4(현재 userRef값)
+    // console.log(nextId.current) // 4(현재 userRef값)
     nextId.current += 1; 
     // onCreate 함수가 실행될 때마다 기존값에 +1씩 증가
     // 값이 변경된다고 해서 컴포넌트가 리렌더링 되지 않음
