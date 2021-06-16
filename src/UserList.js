@@ -11,11 +11,11 @@ function User({ user, onRemove, onToggle }) {
     // deps 배열에 어떤값을 넣는 경우
     // 값이 바뀔때도 호출되지만 처음 마운트될때도 호출됨
     useEffect(() => {
-      console.log('user값이 설정됨');      
-      console.log(user);      
+      // console.log('user값이 설정됨');      
+      // console.log(user);      
       return () => { // cleanup(업데이트 되기 직전에 호출됨)
-        console.log('user값이 바뀌기 전');      
-        console.log(user);      
+        // console.log('user값이 바뀌기 전');      
+        // console.log(user);      
       }
     }, [user]) // userEffect를 사용할 때 내부에서 사용하는 상태가 있다면 deps값을 넣어줘야 함
 
