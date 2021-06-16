@@ -71,6 +71,11 @@ function App() {
     // 값이 변경된다고 해서 컴포넌트가 리렌더링 되지 않음
   }
 
+  const onRemove = id => {
+    setUsers(users.filter(user => user.id !== id)); 
+    // user.id와 파라미터로 받은 id가  같지 않은 경우 새로운 배열 생성 후 추가
+  }
+
   return (  
     <>
       <CreateUser 
@@ -79,7 +84,7 @@ function App() {
         onChange={onChange} 
         onCreate={onCreate} 
       />
-      <UserList users={users} /> 
+      <UserList users={users} onRemove={onRemove} /> 
     </>
     
   );

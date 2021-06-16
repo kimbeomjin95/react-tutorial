@@ -1,22 +1,35 @@
 import React from 'react';
 
 // 하나의 컴포넌트 파일에 두개의 컴포넌트를 선언해도 됨
-function User({ user }) {
+function User({ user, onRemove }) {
+
+    // 객체 비구조화
+    const { username, email, id } = user;
+
+    /* 버튼 클릭시 () => onRemove(id) 함수를 호출하겠다는 의미, 
+       함수를 호출하는 것이 아니라 함수를 만들어서 넣어줘야 함 */
     return(
         <div>
-            <b>{user.username}</b> <span>{user.email}</span>
+            <b>{username}</b> <span>{email}</span>
+            <button onClick={() => onRemove(id)}>삭제</button>
         </div>
     );
 }
 
 // UserList를 props로 받음
-function UserList({ users }) {
+function UserList({ users, onRemove }) {
 
     return (
         <div> 
           {
             users.map(
-              user => (<User user={user} key={user.id} />) 
+              user => (
+                <User 
+                  user={user} 
+                  key={user.id} 
+                  onRemove={onRemove}
+                />
+              ) 
             )
           }
         </div>
