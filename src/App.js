@@ -26,17 +26,20 @@ function App() {
     {
         id: 1,
         username: 'KBJ',
-        email: 'KBJ@naver.com'
+        email: 'KBJ@naver.com',
+        active: true
     },
     {
         id: 2,
         username: 'CHS',
-        email: 'CHS@nate.com'
+        email: 'CHS@nate.com',
+        active: false
     },
     {
         id: 3,
         username: 'JCG',
-        email: 'JCG@hanmail.net'
+        email: 'JCG@hanmail.net',
+        active: false
     }
   ]);
 
@@ -71,9 +74,19 @@ function App() {
     // 값이 변경된다고 해서 컴포넌트가 리렌더링 되지 않음
   }
 
+  // 특정 항목 REMOVE(filter)
   const onRemove = id => {
     setUsers(users.filter(user => user.id !== id)); 
     // user.id와 파라미터로 받은 id가  같지 않은 경우 새로운 배열 생성 후 추가
+  }
+
+  // 특정 항목 UPDATE(map)
+  const onToggle = id => {
+    setUsers(users.map(
+      user => user.id === id 
+      ? { ...user, active: !user.active } // 특정 객체(user)를 업데이트하려면 그 객체의 불변성을 지키기 위해 객체를 복사후 값을 덮어씌움
+      : user
+    ));
   }
 
   return (  
@@ -84,7 +97,7 @@ function App() {
         onChange={onChange} 
         onCreate={onCreate} 
       />
-      <UserList users={users} onRemove={onRemove} /> 
+      <UserList users={users} onRemove={onRemove} onToggle={onToggle} /> 
     </>
     
   );
