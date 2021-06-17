@@ -75,7 +75,10 @@ function App() {
     // setUsers([...users, user])
 
     // 배열에 항목을 추가하는 방법2
-    setUsers(users.concat(user)) // 기존 배열을 복사해서 새로운 배열을 만들고 user항목을 붙여줌
+    // 기존 배열을 복사해서 새로운 배열을 만들고 user항목을 붙여줌
+    // users => users.concat(user) 콜백함수의 파라미터에서 최신 users를 조회하기 때문에 deps에 넣지 않아도 됨
+
+    setUsers(users => users.concat(user)) 
 
     // 버튼 클릭시 input값 지우기
     setInput({
@@ -88,22 +91,22 @@ function App() {
     nextId.current += 1; 
     
     // useCallback내부에서 참조하게 되는 상태, props로 받아오는 값이 있을 경우 deps[]에 넣어야 함
-  }, [username, email, users]);
+  }, [username, email]); // username, email이 바뀔때에만 새로 만들어짐
 
   // 특정 항목 REMOVE(filter)
   const onRemove = useCallback(id => {
-    setUsers(users.filter(user => user.id !== id)); 
+    setUsers(users => users.filter(user => user.id !== id)); 
     // user.id와 파라미터로 받은 id가  같지 않은 경우 새로운 배열 생성 후 추가
-  }, [users]);
+  }, []);
 
   // 특정 항목 UPDATE(map)
   const onToggle = useCallback(id => {
-    setUsers(users.map(
+    setUsers(users => users.map(
       user => user.id === id 
       ? { ...user, active: !user.active } // 특정 객체(user)를 업데이트하려면 그 객체의 불변성을 지키기 위해 객체를 복사후 값을 덮어씌움
       : user
     ));
-  }, [users]);
+  }, []);
 
   // users값이 바뀔때만 함수가 호출되며 바뀌지 않으면 이전 값을 재사용(최적화 완료)
   // deps인 [users]값이 바뀌어야만 countActiveUsers(users)를 호출하겠단 의미
