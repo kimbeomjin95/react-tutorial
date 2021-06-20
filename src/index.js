@@ -4,11 +4,11 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import ImmerArray from './ImmerArray';
-import Hello from './Hello'
+import Counter from './Counter';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Hello color="red" name="react" isSpecial />
+    <Counter />
   </React.StrictMode>,
   document.getElementById('root')
 );
