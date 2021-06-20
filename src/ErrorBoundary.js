@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import * as Sentry from "@sentry/react";
+import { Integrations } from "@sentry/tracing";
 
 class ErrorBoundary extends Component {
   state = {
@@ -16,8 +18,12 @@ class ErrorBoundary extends Component {
     });
     this.setState({
       error: true
-    })
+    });
 
+    // production에서도 작동하기 위한
+    if (process.env.NODE_ENV === 'production') {
+      Sentry.captureException(error, { extra: info });
+    }
   }
 
   render() {
