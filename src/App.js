@@ -2,6 +2,7 @@ import React, { useReducer, useCallback, useMemo, useRef, createContext } from '
 import CreateUser from './CreateUser';
 import UserList from './UserList';
 import useInputs from './useInputs';
+import produce from 'immer';
 
 function countActiveUsers(users) {
   return users.filter(user => user.active).length;
@@ -36,25 +37,37 @@ function reducer(state, action) {
     case 'CREATE_USER':
     // 기존 useState를 사용하여 구현할 때는 inputs를 날리는 작업 따로하고, users 배열을 update하는 작업 따로 했지만
     // 이번에는 두 가지 작업을 동시에 할 수 있음
-      return {
-        // 초기값 설정
-        inputs: initialState.inputs,
-        users: state.users.concat(action.user)
-      }
+    // return {
+      //   // 초기값 설정
+      //   inputs: initialState.inputs,
+      //   users: state.users.concat(action.user)
+      // }
+      return produce(state, draft => {
+        draft.users.push(action.user)
+      });
     case 'TOGGLE_USER':
-      return {
-        ...state, 
-        users: state.users.map(user => 
-          user.id === action.id 
-            ? { ...user, active: !user.active }
-            : user
-          )
-      }
+      return produce(state, draft => {
+        const user = draft.users.find(user => user.id === action.id);
+        user.active = !user.active;
+      })
+      // return {
+      //   ...state, 
+      //   users: state.users.map(user => 
+      //     user.id === action.id 
+      //       ? { ...user, active: !user.active }
+      //       : user
+      //     )
+      // }
     case 'REMOVE_USER':
-      return {
-        ...state,
-        users: state.users.filter(user => user.id !== action.id) // update
-      }    
+      return produce(state, draft => {
+        const index = draft.users.findIndex(user => user.id === action.id);
+        // splice함수를 사용하기 위해선 index를 알아야 함
+        draft.users.splice(index, 1);
+      });
+      // return {
+      //   ...state,
+      //   users: state.users.filter(user => user.id !== action.id) // update
+      // }    
     default:
       throw new Error('Unhandled action');
   }
