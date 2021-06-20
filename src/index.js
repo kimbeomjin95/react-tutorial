@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import App_Error from './App_Error';
 import reportWebVitals from './reportWebVitals';
-import ImmerArray from './ImmerArray';
-import Counter from './Counter';
+
 
 ReactDOM.render(
   <React.StrictMode>
-    <Counter />
+    <App_Error />
   </React.StrictMode>,
   document.getElementById('root')
 );
