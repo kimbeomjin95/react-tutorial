@@ -1,23 +1,25 @@
 import React from 'react';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
+import { UserDispatch } from './App'; /* 주의 */
+// useContext: context를 컴포넌트 내부에서 바로 조회할 수 있게 해주는 hook
+  
+/*
+  결론
+  useState을 사용하는 것과 useReducer를 사용하는것의 차이점을 발견
+  useReducer를 사용하지 않고 useState를 사용하여 내부에서 모든 것을 작업했다면
+  dispatch가 없기 때문에 UserDispatch context를 만들어서 관리하는게 어려웠을 것임
+  물론 Provider 컴포넌트 value에 setState값을 넣어서 관리할 수도 있지만 
+  UserDispatch context만큼 깔끔한 구조가 아닐 것임
+  특정 함수를 여러 컴포넌트에 거쳐서 전달해줘야 할 일이 있으면 dispatch를 관리하는 컨텍스트를 만들어서
+  필요한 곳에서 dispatch를 불러와서 사용하면 됌 
+*/
 
 // 하나의 컴포넌트 파일에 두개의 컴포넌트를 선언해도 됨
-const User = React.memo(function User({ user, onRemove, onToggle }) {
+const User = React.memo(function User({ user }) {
 
     // 객체 비구조화
     const { username, email, id, active } = user;
-
-    // useEffect에 등록한 이 함수는 user값이 설정되거나 바뀔때마다 호출됨(마운트될때도 나타남)
-    // deps 배열에 어떤값을 넣는 경우
-    // 값이 바뀔때도 호출되지만 처음 마운트될때도 호출됨
-    useEffect(() => {
-      // console.log('user값이 설정됨');      
-      // console.log(user);      
-      return () => { // cleanup(업데이트 되기 직전에 호출됨)
-        // console.log('user값이 바뀌기 전');      
-        // console.log(user);      
-      }
-    }, [user]) // userEffect를 사용할 때 내부에서 사용하는 상태가 있다면 deps값을 넣어줘야 함
+    const dispatch = useContext(UserDispatch);
 
     /* 버튼 클릭시 () => onRemove(id) 함수를 호출하겠다는 의미, 
        함수를 호출하는 것이 아니라 함수를 만들어서 넣어줘야 함 */
@@ -28,19 +30,25 @@ const User = React.memo(function User({ user, onRemove, onToggle }) {
               color: active ? 'green' : 'black',
               cursor: 'pointer'              
               }}
-              onClick={() => onToggle(id)}
+              onClick={() => dispatch({
+                type: 'TOGGLE_USER',
+                id
+              })}
             >
               {username}
             </b>
             &nbsp;
             <span>{email}</span>
-            <button onClick={() => onRemove(id)}>삭제</button>
+            <button onClick={() => dispatch({
+              type: 'REMOVE_USER',
+              id
+            })}>삭제</button>
         </div>
     );
 });
 
 // UserList를 props로 받음
-function UserList({ users, onRemove, onToggle }) {
+function UserList({ users }) {
 
     return (
         <div> 
@@ -50,8 +58,6 @@ function UserList({ users, onRemove, onToggle }) {
                 <User 
                   user={user} 
                   key={user.id} 
-                  onRemove={onRemove}
-                  onToggle={onToggle}
                 />
               ) 
             )

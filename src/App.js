@@ -1,4 +1,4 @@
-import React, { useReducer, useCallback, useMemo, useRef} from 'react'; 
+import React, { useReducer, useCallback, useMemo, useRef, createContext } from 'react'; 
 import CreateUser from './CreateUser';
 import UserList from './UserList';
 import useInputs from './useInputs';
@@ -60,6 +60,9 @@ function reducer(state, action) {
   }
 };
 
+// UserDispatch context 생성
+export const UserDispatch = createContext(null);
+
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState) // initialState: inputs, users를 포함
   // form: 상태
@@ -89,24 +92,11 @@ function App() {
   }, [username, email, reset]) // 기존 상태에 의존하는 값 username, email + reset
   // reset을 넣은 이유는 custom hook에서 반환하고, ESlint 규칙상 넣었지만, 사실 안넣어도 상관은 없음
 
-  const onToggle = useCallback(id => {
-    dispatch({
-      type: 'TOGGLE_USER',
-      id
-    });
-  }, []);
-
-  const onRemove = useCallback(id => {
-    dispatch({
-      type: 'REMOVE_USER',
-      id
-    });
-  }, []);
-
   const count = useMemo(() => countActiveUsers(users), [users]);
 
   return (  
-    <>
+    // useReducer를 통해서 받아온 dispatch값
+    <UserDispatch.Provider value={dispatch}>
       <CreateUser 
         username={username}
         email={email}
@@ -115,11 +105,9 @@ function App() {
       />
       <UserList 
         users={users} 
-        onToggle={onToggle} 
-        onRemove={onRemove} 
       /> 
       <div>활성 사용자 수: {count}</div>
-    </>
+    </UserDispatch.Provider>
     
   );
 }
